@@ -6,8 +6,7 @@ const resolvers = {
     Query: {
         me: async (parent, args, context) => {
             if(context.user) {
-                const userData = await User
-                .findOne({_id: context.user._id})
+                const userData = await User.findOne({_id: context.user._id})
                 .select('-__v -password');
                 return userData;
             }
@@ -18,15 +17,13 @@ const resolvers = {
     Mutation: {
 
         login: async (parent, {email, password}) => {
-            const user = await User
-            .findOne({email});
+            const user = await User.findOne({email});
 
                 if (!user) {
                     throw new AuthenticationError('The Username is incorrect')
                 }
             
-            const pass = await user
-            .isCorrectPassword(password);
+            const pass = await user.isCorrectPassword(password);
 
                 if (!pass) {
                     throw new AuthenticationError('The password is incorrect')

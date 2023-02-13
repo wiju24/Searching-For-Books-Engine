@@ -25,10 +25,10 @@ const resolvers = {
                     throw new AuthenticationError('The Username is incorrect')
                 }
             
-            const password = await password
+            const pass = await user
             .isCorrectPassword(password);
 
-                if (!password) {
+                if (!pass) {
                     throw new AuthenticationError('The password is incorrect')
                 }
 

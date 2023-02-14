@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
-import {LOGIN_USER} from '../utils/mutations';
-import {useMutation} from '../utils/mutations'
+import {ADD_USER} from '../utils/mutations';
+import {useMutation} from '@apollo/react-hooks';
 
 import Auth from '../utils/auth';
 
@@ -10,7 +10,7 @@ const SignupForm = () => {
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [login, {error}] = useMutation(LOGIN_USER);
+  const [addUser, {error}] = useMutation(ADD_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -28,11 +28,11 @@ const SignupForm = () => {
     }
 
     try {
-      const {data} = await login ({
+      const {data} = await addUser ({
         variables: {...userFormData}
       });
 
-      Auth.login(data.login.token);
+      Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
@@ -93,7 +93,7 @@ const SignupForm = () => {
           <Form.Control.Feedback type='invalid'>Password is required!</Form.Control.Feedback>
         </Form.Group>
         <Button
-          disabled={!(userFormData.email && userFormData.password)}
+          disabled={!(userFormData.username && userFormData.email && userFormData.password)}
           type='submit'
           variant='success'>
           Submit
